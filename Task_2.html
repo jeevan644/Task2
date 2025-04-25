@@ -1,0 +1,49 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+
+# Optional: Jupyter display settings
+%matplotlib inline
+sns.set(style="whitegrid")
+
+df = pd.read_csv("C:\\Users\\JEEVAN KUMAR\\Desktop\\jupyter\\titanic.csv")
+df.head()
+
+# Basic info
+df.info()
+
+# Descriptive statistics
+df.describe(include='all')  # For both numerical & categorical
+
+numeric_cols = df.select_dtypes(include=np.number).columns
+df[numeric_cols].hist(bins=15, figsize=(15, 10))
+plt.suptitle('Histograms of Numeric Features')
+plt.show()
+
+for col in numeric_cols:
+    plt.figure(figsize=(8, 4))
+    sns.boxplot(x=df[col])
+    plt.title(f'Boxplot of {col}')
+    plt.show()
+
+
+plt.figure(figsize=(10, 8))
+sns.heatmap(df.select_dtypes(include='number').corr(), annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Correlation Matrix')
+plt.show()
+
+# Example with selected features
+selected_cols = ['Survived', 'Age', 'Fare', 'Pclass']
+sns.pairplot(df[selected_cols], hue='Survived')
+plt.show()
+
+sns.countplot(data=df, x='Sex', hue='Survived')
+plt.title('Survival Count by Sex')
+plt.show()
+
+sns.barplot(data=df, x='Pclass', y='Survived')
+plt.title('Survival Rate by Passenger Class')
+plt.show()
+
